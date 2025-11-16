@@ -49,10 +49,6 @@
 4. 打包：`pnpm build` 输出 `apps/web-ele/dist`。
 5. 部署：将 dist 拷贝至 Laravel `public/admin` 等目录，例如 `rsync -av apps/web-ele/dist/ ../laravel/public/admin`；Laravel 路由可添加 `Route::view('/admin/{any?}', 'admin')->where('any', '.*');` 作为 SPA fallback。
 
-## 临时绕过登录（仅供本地调试）
-
-当需要在没有后端的情况下快速预览界面，可在 `.env.*` 中配置 `VITE_SKIP_LOGIN_GUARD=true`。`apps/web-ele/src/router/guard.ts` 会读取该变量并跳过鉴权。**请务必仅在开发/演示阶段开启**，上线前改回 `false` 或删除相关逻辑，以免动态路由、菜单未正常生成。
-
 ## 模块 / 组件对照表
 
 | 分类 | 说明 | 关键目录 |
