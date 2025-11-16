@@ -5,10 +5,18 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { startProgress, stopProgress } from '@vben/utils';
 
+import { appConfig } from '#/config/app';
 import { accessRoutes, coreRouteNames } from '#/router/routes';
 import { useAuthStore } from '#/store';
 
 import { generateAccess } from './access';
+
+/**
+ * 可通过 VITE_SKIP_LOGIN_GUARD（默认 false）绕过鉴权，仅用于本地调试。
+ * 参见 README「临时绕过登录」小节说明。
+ */
+const SKIP_LOGIN_GUARD =
+  String(import.meta.env.VITE_SKIP_LOGIN_GUARD ?? 'false') === 'true';
 
 /**
  * 通用守卫配置
@@ -45,6 +53,18 @@ function setupCommonGuard(router: Router) {
  * @param router
  */
 function setupAccessGuard(router: Router) {
+  if (SKIP_LOGIN_GUARD) {
+    router.beforeEach((to) => {
+      if (to.path === LOGIN_PATH) {
+        return (
+          preferences.app.defaultHomePath || appConfig.defaultHomePath || '/'
+        );
+      }
+      return true;
+    });
+    return;
+  }
+
   router.beforeEach(async (to, from) => {
     const accessStore = useAccessStore();
     const userStore = useUserStore();

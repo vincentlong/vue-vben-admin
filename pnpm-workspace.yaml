@@ -8,10 +8,8 @@ packages:
   - packages/@core/*
   - packages/effects/*
   - packages/business/*
-  - apps/*
+  - apps/web-ele
   - scripts/*
-  - docs
-  - playground
 
 catalog:
   '@ast-grep/napi': ^0.37.0
@@ -66,7 +64,6 @@ catalog:
   '@vueuse/core': ^13.4.0
   '@vueuse/integrations': ^13.4.0
   '@vueuse/motion': ^3.0.3
-  ant-design-vue: ^4.2.6
   archiver: ^7.0.1
   autoprefixer: ^10.4.21
   axios: ^1.10.0
@@ -124,7 +121,6 @@ catalog:
   lodash.set: ^4.3.2
   lucide-vue-next: ^0.507.0
   medium-zoom: ^1.1.0
-  naive-ui: ^2.42.0
   nitropack: ^2.11.13
   nprogress: ^0.2.0
   ora: ^8.2.0

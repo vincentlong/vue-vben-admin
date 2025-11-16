@@ -2,6 +2,9 @@ import { defineConfig } from '@vben/vite-config';
 
 import ElementPlus from 'unplugin-element-plus/vite';
 
+const devProxyTarget =
+  process.env.VITE_DEV_SERVER_PROXY_TARGET || 'http://localhost:8000';
+
 export default defineConfig(async () => {
   return {
     application: {},
@@ -15,10 +18,7 @@ export default defineConfig(async () => {
         proxy: {
           '/api': {
             changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, ''),
-            // mock代理目标地址
-            target: 'http://localhost:5320/api',
-            ws: true,
+            target: devProxyTarget,
           },
         },
       },

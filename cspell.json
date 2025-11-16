@@ -5,8 +5,6 @@
   "allowCompoundWords": true,
   "words": [
     "acmr",
-    "antd",
-    "antdv",
     "astro",
     "brotli",
     "clsx",
@@ -26,7 +24,6 @@
     "minw",
     "mkdist",
     "mockjs",
-    "naiveui",
     "nocheck",
     "noopener",
     "noreferrer",

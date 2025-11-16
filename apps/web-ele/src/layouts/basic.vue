@@ -4,7 +4,6 @@ import type { NotificationItem } from '@vben/layouts';
 import { computed, ref, watch } from 'vue';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
 import { BookOpenText, CircleHelp, SvgGithubIcon } from '@vben/icons';
 import {
@@ -17,6 +16,7 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
+import { appConfig } from '#/config/app';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
@@ -60,35 +60,46 @@ const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
 
-const menus = computed(() => [
-  {
-    handler: () => {
-      openWindow(VBEN_DOC_URL, {
-        target: '_blank',
-      });
-    },
-    icon: BookOpenText,
-    text: $t('ui.widgets.document'),
-  },
-  {
-    handler: () => {
-      openWindow(VBEN_GITHUB_URL, {
-        target: '_blank',
-      });
-    },
-    icon: SvgGithubIcon,
-    text: 'GitHub',
-  },
-  {
-    handler: () => {
-      openWindow(`${VBEN_GITHUB_URL}/issues`, {
-        target: '_blank',
-      });
-    },
-    icon: CircleHelp,
-    text: $t('ui.widgets.qa'),
-  },
-]);
+const externalLinks = appConfig.externalLinks;
+
+const menus = computed(() => {
+  const docMenu = appConfig.features.showDocumentEntry
+    ? [
+        {
+          handler: () => {
+            openWindow(externalLinks.doc, {
+              target: '_blank',
+            });
+          },
+          icon: BookOpenText,
+          text: $t('ui.widgets.document'),
+        },
+      ]
+    : [];
+  const githubMenus = appConfig.features.showGithubEntry
+    ? [
+        {
+          handler: () => {
+            openWindow(externalLinks.github, {
+              target: '_blank',
+            });
+          },
+          icon: SvgGithubIcon,
+          text: 'GitHub',
+        },
+        {
+          handler: () => {
+            openWindow(`${externalLinks.github}/issues`, {
+              target: '_blank',
+            });
+          },
+          icon: CircleHelp,
+          text: $t('ui.widgets.qa'),
+        },
+      ]
+    : [];
+  return [...docMenu, ...githubMenus];
+});
 
 const avatar = computed(() => {
   return userStore.userInfo?.avatar ?? preferences.app.defaultAvatar;
